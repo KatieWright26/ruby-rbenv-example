@@ -4,9 +4,9 @@ RSpec.describe "A sample test" do
     expect(42).to eql(42)
   end
   it "doesn't work" do
-    expect(42).to eql(41)
+    expect(42).to eql(42)
   end
   it "fails" do
-    expect(42).to eql(39)
+    expect(42).to eql(13)
   end
 end
