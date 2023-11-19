@@ -3,5 +3,5 @@
 Buildkite::TestCollector.configure(
   hook: :rspec,
   token: "oyR8zzNDySwNEyR7sgoHoYz6",
-  url: "https://analytics-api.buildkite.com/v1/uploads"
+  url: "http://analytics-api.buildkite.localhost/v1/uploads"
 )
