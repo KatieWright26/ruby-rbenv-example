@@ -2,7 +2,7 @@
  # Localhost
 Buildkite::TestCollector.configure(
   hook: :rspec,
-  token: "zn2DTicp9s8g9qX1MDVBaTAX",
+  token: "CZqvC79oPutgr2J4xZJFf1Jv",
   url: "http://analytics-api.buildkite.localhost/v1/uploads"
 )
 
