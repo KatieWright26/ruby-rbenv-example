@@ -9,16 +9,16 @@ RSpec.describe "A sample test" do
   it "fails" do
     expect(42).to eql(13)
   end
-  it "might flake" do
-    expect(rand(0...2)).to eq 1
+  it "I have a 20% chance of failing" do
+    expect(rand(0...25).to be <=20
+  end 
+  it "I have a 10% chance of failing" do
+    expect(rand(0...50).to be <=45
   end
-  it "might also flake" do
-    expect(rand(0...2)).to eq 1
+  it "I have a 66% chance of failing" do
+    expect(rand(0...3)).to eq 1
   end
-    it "here's another flaky tests" do
-    expect(rand(0...2)).to eq 1
-  end
-  it "yet another flaky flake" do
+  it "I have a 50% chance of failing" do
     expect(rand(0...2)).to eq 1
   end
 end
