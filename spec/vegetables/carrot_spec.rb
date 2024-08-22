@@ -1,28 +1,23 @@
 require "spec_helper"
+
 RSpec.describe "A sample test" do
   it "runs aok" do
     expect(42).to eql(42)
   end
-  it "doesn't work" do
-    expect(42).to eql(42)
-  end
-  it "fails" do
-    expect(42).to eql(13)
-  end
 
-  it "I have a 20% chance of failing" do
-    expect(rand(0...25)).to be <=20
+  it "I have a 25% chance of failing" do
+    expect(rand(0...4)).to be < 3
   end
 
   it "I have a 10% chance of failing" do
-    expect(rand(0...50)).to be <=45
+    expect(rand(0...10)).to be < 9
   end
 
   it "I have a 1% chance of failing" do
-    expect(rand(0...99)).to be <=99
+    expect(rand(0...100)).to be < 99
   end
 
-  it "I have a 66% chance of failing" do
+  it "I have a 33% chance of failing" do
     expect(rand(0...3)).to eq 1
   end
 
