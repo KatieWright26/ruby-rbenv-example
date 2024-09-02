@@ -18,7 +18,7 @@ RSpec.describe "A sample test" do
   end
 
   it "I have a 33% chance of failing" do
-    expect(rand(0...3)).to eq 1
+    expect(rand(0...3)).to be < 2
   end
 
   it "I have a 50% chance of failing" do
