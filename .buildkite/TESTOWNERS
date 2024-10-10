@@ -1,4 +1,1 @@
-/spec/fruits fruit
-apples/ apple
-**/wumpa_spec.rb fake-fruit
-vegetables/*  carrot
+**/custard_spec.rb fake-fruit
