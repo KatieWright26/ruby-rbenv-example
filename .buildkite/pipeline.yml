@@ -1,3 +1,7 @@
 steps:
   - name: ":rspec:"
     command: "bundle install && bundle exec rspec --color spec"
+    plugins:
+      - test-collector#v1.12.0:
+          files: "results/*.xml"
+          format: "junit"
