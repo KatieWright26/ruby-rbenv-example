@@ -11,3 +11,7 @@ steps:
       - tests#v1.0.1:
           test-runner: rspec
           result-path: tmp/rspec-result.json
+    # bktec reads BUILDKITE_PARALLEL_JOB/_COUNT to work out which slice of the
+    # test plan to run, and the agent only sets them when parallelism is set.
+    # Without this bktec exits 16 on "invalid configuration".
+    parallelism: 2
