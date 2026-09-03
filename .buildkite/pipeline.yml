@@ -5,3 +5,4 @@ steps:
       - test-collector#v1.12.0:
           files: "results/*.xml"
           format: "junit"
+          api-url: "http://analytics-api.buildkite.localhost/v1/uploads"
