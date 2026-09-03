@@ -1,5 +1,10 @@
 steps:
   - name: ":rspec:"
+    env:
+      # The suite the pre-command hook mints an OIDC token for. The suite must
+      # exist, and its OIDC policy must admit this pipeline with the
+      # write_uploads scope.
+      TEST_ENGINE_SUITE_SLUG: "REPLACE_WITH_SUITE_SLUG"
     command: >-
       bundle install &&
       bundle exec rspec --color

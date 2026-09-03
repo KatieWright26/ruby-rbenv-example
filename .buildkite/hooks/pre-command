@@ -5,3 +5,32 @@ set -eu
 export PATH="$HOME/.rbenv/bin:$PATH"
 
 eval "$(rbenv init -)"
+
+# Mint a Test Engine token for the test-collector plugin.
+#
+# This lives in a hook, not in the step's commands: the agent's scriptwrapper
+# only captures env from hooks, so a token exported inside the command would
+# never reach the plugin's pre-exit hook. Don't call `exit` below either --
+# that discards exported vars before the wrapper can capture them.
+#
+# TEST_ENGINE_SUITE_SLUG is set in the step's env, next to the plugin config.
+suite_slug="${TEST_ENGINE_SUITE_SLUG:-}"
+
+if [[ -z "${suite_slug}" || "${suite_slug}" == "REPLACE_WITH_SUITE_SLUG" ]]; then
+  echo "^^^ +++"
+  echo "TEST_ENGINE_SUITE_SLUG is not set to a real suite, so no Test Engine"
+  echo "token was minted. The test-collector plugin will fail in pre-exit."
+else
+  audience="http://buildkite.localhost/organizations/${BUILDKITE_ORGANIZATION_SLUG}/analytics/suites/${suite_slug}"
+
+  if oidc_token="$(buildkite-agent oidc request-token --audience "${audience}" --lifetime 1200 2>&1)"; then
+    export BUILDKITE_ANALYTICS_TOKEN="${oidc_token}"
+    echo "Minted a Test Engine OIDC token for suite '${suite_slug}'"
+  else
+    echo "^^^ +++"
+    echo "Could not mint a Test Engine OIDC token for suite '${suite_slug}':"
+    echo "${oidc_token}"
+    echo "Check the suite exists and its OIDC policy admits this pipeline"
+    echo "with the write_uploads scope."
+  fi
+fi
