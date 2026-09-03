@@ -1,18 +1,13 @@
 steps:
-  - name: ":rspec:"
-    env:
-      # The suite the pre-command hook mints an OIDC token for. The suite must
-      # exist, and its OIDC policy must admit this pipeline with the
-      # write_uploads scope.
-      TEST_ENGINE_SUITE_SLUG: "REPLACE_WITH_SUITE_SLUG"
-    command: >-
-      bundle install &&
-      bundle exec rspec --color
-      --format progress
-      --format RspecJunitFormatter --out results/rspec.xml
-      spec
+  - label: ":rspec:"
+    # The plugin sets up bktec and the environment but does not run the tests
+    # for us, so the step has to invoke `bktec run` itself. bktec drives rspec
+    # and writes the result file it then uploads.
+    command: bundle install && bktec run
     plugins:
-      - test-collector#v1.12.0:
-          files: "results/*.xml"
-          format: "junit"
-          api-url: "http://analytics-api.buildkite.localhost/v1/uploads"
+      # Mints its own suite-scoped OIDC token and creates the suite from the
+      # pipeline on first run, so there is no token to store and no suite to
+      # create by hand. suite-slug defaults to the pipeline slug.
+      - tests#v1.0.1:
+          test-runner: rspec
+          result-path: tmp/rspec-result.json
