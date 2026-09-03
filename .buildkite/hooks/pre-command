@@ -23,14 +23,21 @@ if [[ -z "${suite_slug}" || "${suite_slug}" == "REPLACE_WITH_SUITE_SLUG" ]]; the
 else
   audience="http://buildkite.localhost/organizations/${BUILDKITE_ORGANIZATION_SLUG}/analytics/suites/${suite_slug}"
 
-  if oidc_token="$(buildkite-agent oidc request-token --audience "${audience}" --lifetime 1200 2>&1)"; then
+  # Keep stderr out of the captured value: a warning glued onto the token
+  # would mint "successfully" and then 401 at upload with nothing to explain it.
+  oidc_stderr="$(mktemp)"
+
+  if oidc_token="$(buildkite-agent oidc request-token --audience "${audience}" --lifetime 1200 2>"${oidc_stderr}")"; then
     export BUILDKITE_ANALYTICS_TOKEN="${oidc_token}"
     echo "Minted a Test Engine OIDC token for suite '${suite_slug}'"
+    cat "${oidc_stderr}"
   else
     echo "^^^ +++"
     echo "Could not mint a Test Engine OIDC token for suite '${suite_slug}':"
-    echo "${oidc_token}"
+    cat "${oidc_stderr}"
     echo "Check the suite exists and its OIDC policy admits this pipeline"
     echo "with the write_uploads scope."
   fi
+
+  rm -f "${oidc_stderr}"
 fi
