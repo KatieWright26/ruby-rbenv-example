@@ -1,3 +1,10 @@
+image: "docker.io/library/ruby:3.3-bookworm"
+
 steps:
   - name: ":rspec:"
     command: "bundle install && bundle exec rspec --color specs"
+
+  - label: "Tests"
+    command: |
+      bundle install
+      bundle exec rspec
