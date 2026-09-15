@@ -1,17 +1,3 @@
 steps:
-  - label: ":rspec:"
-    # The plugin sets up bktec and the environment but does not run the tests
-    # for us, so the step has to invoke `bktec run` itself. bktec drives rspec
-    # and writes the result file it then uploads.
-    command: bundle install && bktec run
-    plugins:
-      # Mints its own suite-scoped OIDC token and creates the suite from the
-      # pipeline on first run, so there is no token to store and no suite to
-      # create by hand. suite-slug defaults to the pipeline slug.
-      - tests#v1.0.1:
-          test-runner: rspec
-          result-path: tmp/rspec-result.json
-    # bktec reads BUILDKITE_PARALLEL_JOB/_COUNT to work out which slice of the
-    # test plan to run, and the agent only sets them when parallelism is set.
-    # Without this bktec exits 16 on "invalid configuration".
-    parallelism: 2
+  - name: ":rspec:"
+    command: "bundle install && bundle exec rspec --color specs"
