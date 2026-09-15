@@ -1,5 +1,11 @@
 image: "docker.io/library/ruby:3.3-bookworm"
 
 steps:
-  - name: ":rspec:"
-    command: "bundle install && bundle exec rspec --color"
+  - label: "Test"
+    command: bktec run
+    plugins:
+      - tests#v1.0.0:
+          test-runner: rspec
+          result-path: tmp/rspec-result.json
+          suite-slug: onboarding-flow-test
+    parallelism: 2
