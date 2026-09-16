@@ -2,7 +2,9 @@ image: "docker.io/library/ruby:3.3-bookworm"
 
 steps:
   - label: "Test"
-    command: bktec run
+    command: |
+      bundle install 
+      bktec run
     plugins:
       - tests#v1.0.0:
           test-runner: rspec
